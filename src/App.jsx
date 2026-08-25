@@ -138,6 +138,14 @@ function colourFill(c) {
   return c.hex;
 }
 
+// Same stripe treatment for two-tone entries inside the "Other colours" pie:
+// SVG pattern ids referenced by the pie slices, and CSS stripes for the swatches.
+const otherPatternId = (name) => `other-stripe-${name.replace(/[^A-Za-z0-9]/g, "")}`;
+function otherFill(c) {
+  if (!c.name.includes("/")) return c.hex;
+  return `url(#${otherPatternId(c.name)})`;
+}
+
 const COLOUR_TOTAL = 3186;
 const COLOUR_NAMED_SUM = COLOUR_DATA.reduce((s, c) => s + c.value, 0);
 
@@ -172,13 +180,13 @@ const OTHER_COLOUR_DATA = [
   { name: "Ruby Red", value: 4, hex: "#5B1F28" },
   { name: "Unrecorded", value: 3, hex: "#E4DFCF" },
   { name: "Iris Blue", value: 3, hex: "#6A7FA8" },
-  { name: "Blue/White", value: 3, hex: "#3A5C82" },
-  { name: "Reed/Red", value: 2, hex: "#C9A96A" },
+  { name: "Blue/White", value: 3, hex: "#3A5C82", hex2: "#E9E6DD" },
+  { name: "Reed/Red", value: 2, hex: "#C9A96A", hex2: "#B7332B" },
   { name: "Coral Red", value: 1, hex: "#C75A4A" },
   { name: "Graphite", value: 1, hex: "#4A4A47" },
   { name: "Maroon", value: 1, hex: "#6E2430" },
-  { name: "Black/Lizard", value: 1, hex: "#2A2A28" },
-  { name: "Aero Silver/Iris Blue", value: 1, hex: "#B7BAB8" },
+  { name: "Black/Lizard", value: 1, hex: "#2A2A28", hex2: "#5E7A42" },
+  { name: "Aero Silver/Iris Blue", value: 1, hex: "#B7BAB8", hex2: "#6A7FA8" },
   { name: "Cream", value: 1, hex: "#E8DCC2" },
 ];
 const OTHER_COLOUR_TOTAL = OTHER_COLOUR_DATA.reduce((s, c) => s + c.value, 0);
@@ -652,6 +660,21 @@ export default function App() {
                           </div>
                           <ResponsiveContainer width="100%" height={240}>
                             <PieChart>
+                              <defs>
+                                {OTHER_COLOUR_DATA.filter((c) => c.name.includes("/")).map((c) => (
+                                  <pattern
+                                    key={c.name}
+                                    id={otherPatternId(c.name)}
+                                    width={8}
+                                    height={8}
+                                    patternUnits="userSpaceOnUse"
+                                    patternTransform="rotate(45)"
+                                  >
+                                    <rect width={4} height={8} fill={c.hex} />
+                                    <rect x={4} width={4} height={8} fill={c.hex2} />
+                                  </pattern>
+                                ))}
+                              </defs>
                               <Pie
                                 data={OTHER_COLOUR_DATA}
                                 dataKey="value"
@@ -665,7 +688,7 @@ export default function App() {
                                 strokeWidth={1}
                               >
                                 {OTHER_COLOUR_DATA.map((c) => (
-                                  <Cell key={c.name} fill={c.hex} />
+                                  <Cell key={c.name} fill={otherFill(c)} />
                                 ))}
                               </Pie>
                               <Tooltip content={<PieTooltip />} />
@@ -683,7 +706,9 @@ export default function App() {
                                     width: 10,
                                     height: 10,
                                     borderRadius: "50%",
-                                    background: c.hex,
+                                    background: c.name.includes("/")
+                                      ? `repeating-linear-gradient(45deg, ${c.hex} 0 6px, ${c.hex2} 6px 12px)`
+                                      : c.hex,
                                     border: `1px solid ${INK}`,
                                     display: "inline-block",
                                     flexShrink: 0,
