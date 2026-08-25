@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import carOutline from "./outline.jpg";
 import carMask from "./outline-mask.png";
+import logo from "../image-removebg-preview.png";
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
   LineChart, Line, LabelList, PieChart, Pie, Cell, Sector
@@ -316,8 +317,13 @@ export default function App() {
           borderBottom: `3px solid ${INK}`,
           background: `repeating-linear-gradient(135deg, ${PANEL}, ${PANEL} 22px, #EFE9DA 22px, #EFE9DA 24px)`,
         }}
-        className="px-6 sm:px-10 py-8"
+        className="relative pl-6 pr-28 py-8 sm:pl-10 sm:pr-56"
       >
+        <img
+          src={logo}
+          alt="Messerschmitt Foundation of Great Britain"
+          className="absolute top-5 right-5 sm:top-8 sm:right-10 h-16 sm:h-28 w-auto object-contain drop-shadow-[0_2px_6px_rgba(0,0,0,0.25)]"
+        />
         <div className="flex items-center gap-2 mb-2">
           <div style={{ width: 10, height: 10, borderRadius: "50%", background: ACCENT }} />
           <span
