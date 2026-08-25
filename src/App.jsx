@@ -506,14 +506,15 @@ export default function App() {
               </button>
             ))}
           </div>
-          <ResponsiveContainer width="100%" height={Math.max(120, ENTRY_DATA[entryMethod].length * 18 + 30)}>
+          <ResponsiveContainer width="100%" height={Math.max(140, ENTRY_DATA[entryMethod].length * 20 + 40)}>
             <BarChart data={ENTRY_DATA[entryMethod]} layout="vertical" margin={{ left: 8, right: 34, top: 4, bottom: 4 }}>
               <CartesianGrid strokeDasharray="2 4" stroke={RIVET} horizontal={false} />
               <XAxis type="number" tick={{ fontSize: 11, fill: "#7A776D" }} axisLine={{ stroke: RIVET }} tickLine={false} />
               <YAxis
                 type="category"
                 dataKey="name"
-                width={128}
+                width={140}
+                interval={0}
                 tick={{ fontSize: 12, fill: INK }}
                 axisLine={{ stroke: RIVET }}
                 tickLine={false}
