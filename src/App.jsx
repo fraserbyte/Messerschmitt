@@ -125,8 +125,9 @@ const CAR_RIGHT = 1001;
 const CAR_WIDTH = CAR_RIGHT - CAR_LEFT;
 const CAR_ASPECT = "1024 / 531";
 
-// CSS hatching for the "Other colours" segment
-const OTHER_PATTERN = "repeating-linear-gradient(45deg, #E4DFCF 0 4px, #B7BAB8 4px 8px)";
+// Dotted fill for the "Other colours" segment — distinct from the diagonal
+// stripes used for two-tone colours, so the misc bucket doesn't blend in.
+const OTHER_PATTERN = "#E4DFCF radial-gradient(circle, #B7BAB8 1.6px, transparent 2.6px) 0 0/9px 9px";
 
 // Fill for a colour segment: solid for single colours, a diagonal stripe of
 // both shades for two-tone entries, hatching for the "Other colours" bucket.
