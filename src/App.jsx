@@ -771,35 +771,6 @@ export default function App() {
                     );
                   })}
                 </div>
-
-                <p className="text-xs mt-3 text-center" style={{ color: "#7A776D" }}>
-                  <span
-                    style={{
-                      display: "inline-block",
-                      width: 8,
-                      height: 8,
-                      borderRadius: "50%",
-                      background: "#5B1F28",
-                      border: `1px solid ${INK}`,
-                      marginRight: 4,
-                    }}
-                  />
-                  <strong>Ruby red</strong> (Rubinrot on the 1955&ndash;56 colour chart) is a dark,
-                  burgundy-like shade &mdash; only 4 cars on record. &nbsp;
-                  <span
-                    style={{
-                      display: "inline-block",
-                      width: 8,
-                      height: 8,
-                      borderRadius: "50%",
-                      background: "#D98A76",
-                      border: `1px solid ${INK}`,
-                      marginRight: 4,
-                    }}
-                  />
-                  <strong>Pink tones</strong> (Coral, Rose) total 22 cars combined &mdash; too few to
-                  justify their own bar, so both remain folded into &ldquo;Other colours&rdquo; above.
-                </p>
               </>
             );
           })()}
