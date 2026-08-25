@@ -625,13 +625,13 @@ export default function App() {
                         left: "50%",
                         transform: "translate(-50%, -50%)",
                         zIndex: 30,
-                        width: 300,
+                        width: 360,
                         maxWidth: "calc(100vw - 24px)",
                         background: PANEL,
                         border: `1px solid ${INK}`,
                         borderRadius: "2px",
                         boxShadow: "0 10px 30px rgba(42,42,40,0.22)",
-                        padding: "10px 12px 8px",
+                        padding: "12px 14px 10px",
                       }}
                     >
                       <div className="flex items-baseline justify-between mb-1">
@@ -645,12 +645,12 @@ export default function App() {
                             >
                               Other colours
                             </span>
-                            <span style={{ fontSize: 11, color: "#948F81" }}>
+                            <span style={{ fontSize: 12, color: "#948F81" }}>
                               {OTHER_COLOUR_TOTAL.toLocaleString()} cars &middot;{" "}
                               {((OTHER_COLOUR_TOTAL / COLOUR_TOTAL) * 100).toFixed(1)}%
                             </span>
                           </div>
-                          <ResponsiveContainer width="100%" height={170}>
+                          <ResponsiveContainer width="100%" height={240}>
                             <PieChart>
                               <Pie
                                 data={OTHER_COLOUR_DATA}
@@ -658,8 +658,8 @@ export default function App() {
                                 nameKey="name"
                                 cx="50%"
                                 cy="50%"
-                                innerRadius={42}
-                                outerRadius={72}
+                                innerRadius={60}
+                                outerRadius={105}
                                 paddingAngle={1}
                                 stroke={PANEL}
                                 strokeWidth={1}
@@ -675,13 +675,13 @@ export default function App() {
                             {OTHER_COLOUR_DATA.map((c) => (
                               <div
                                 key={c.name}
-                                className="flex items-center gap-1.5 text-[11px]"
+                                className="flex items-center gap-1.5 text-xs"
                                 style={{ color: INK }}
                               >
                                 <span
                                   style={{
-                                    width: 8,
-                                    height: 8,
+                                    width: 10,
+                                    height: 10,
                                     borderRadius: "50%",
                                     background: c.hex,
                                     border: `1px solid ${INK}`,
