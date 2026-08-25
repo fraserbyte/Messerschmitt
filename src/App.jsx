@@ -3,7 +3,7 @@ import carOutline from "./outline.jpg";
 import carMask from "./outline-mask.png";
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
-  LineChart, Line, LabelList, PieChart, Pie, Cell
+  LineChart, Line, LabelList, PieChart, Pie, Cell, Sector
 } from "recharts";
 
 const MODEL_DATA = [
@@ -279,6 +279,7 @@ export default function App() {
   const [hoverColour, setHoverColour] = useState(null);
   const [entryMethod, setEntryMethod] = useState("All");
   const [typeFranchise, setTypeFranchise] = useState("All");
+  const [pinnedColour, setPinnedColour] = useState(null);
   // Small grace period so the "Other colours" popover doesn't flicker as the
   // pointer moves between the car segment, the legend, and the popover itself.
   const otherTimer = useRef(null);
@@ -290,6 +291,14 @@ export default function App() {
     if (otherTimer.current) clearTimeout(otherTimer.current);
     otherTimer.current = setTimeout(() => setHoverColour(null), 150);
   };
+  // Clicking "Other colours" pins the pie popover open so it can be interacted
+  // with; clicking it again (or the × button) closes it.
+  const clickColour = (name) => {
+    setPinnedColour((prev) =>
+      name === "Other colours" ? (prev === "Other colours" ? null : "Other colours") : null
+    );
+  };
+  const otherOpen = hoverColour === "Other colours" || pinnedColour === "Other colours";
 
   return (
     <div
@@ -601,6 +610,7 @@ export default function App() {
                         }}
                         onMouseEnter={() => enterColour(s.name)}
                         onMouseLeave={leaveColour}
+                        onClick={() => clickColour(s.name)}
                       />
                     );
                   })}
@@ -623,8 +633,9 @@ export default function App() {
                 </div>
 
                   {/* Pie breakdown of "Other colours", centred over the car
-                      while the other colour segments grey out beneath it */}
-                  {hoverColour === "Other colours" && (
+                      while the other colour segments grey out beneath it. Click to
+                      pin it open; the × (or clicking the section again) closes it. */}
+                  {otherOpen && (
                     <div
                       onMouseEnter={() => enterColour("Other colours")}
                       onMouseLeave={leaveColour}
@@ -643,7 +654,7 @@ export default function App() {
                         padding: "12px 14px 10px",
                       }}
                     >
-                      <div className="flex items-baseline justify-between mb-1">
+                      <div className="flex items-center justify-between mb-1">
                             <span
                               style={{
                                 fontFamily: "Georgia, 'Times New Roman', serif",
@@ -654,9 +665,29 @@ export default function App() {
                             >
                               Other colours
                             </span>
-                            <span style={{ fontSize: 12, color: "#948F81" }}>
-                              {OTHER_COLOUR_TOTAL.toLocaleString()} cars &middot;{" "}
-                              {((OTHER_COLOUR_TOTAL / COLOUR_TOTAL) * 100).toFixed(1)}%
+                            <span className="flex items-center gap-2">
+                              <span style={{ fontSize: 12, color: "#948F81" }}>
+                                {OTHER_COLOUR_TOTAL.toLocaleString()} cars &middot;{" "}
+                                {((OTHER_COLOUR_TOTAL / COLOUR_TOTAL) * 100).toFixed(1)}%
+                              </span>
+                              {pinnedColour === "Other colours" && (
+                                <button
+                                  type="button"
+                                  aria-label="Close"
+                                  onClick={() => setPinnedColour(null)}
+                                  style={{
+                                    fontSize: 16,
+                                    lineHeight: 1,
+                                    cursor: "pointer",
+                                    color: INK,
+                                    background: "none",
+                                    border: "none",
+                                    padding: "0 2px",
+                                  }}
+                                >
+                                  &times;
+                                </button>
+                              )}
                             </span>
                           </div>
                           <ResponsiveContainer width="100%" height={240}>
@@ -687,6 +718,9 @@ export default function App() {
                                 paddingAngle={1}
                                 stroke={PANEL}
                                 strokeWidth={1}
+                                activeShape={(props) => (
+                                  <Sector {...props} outerRadius={props.outerRadius + 7} />
+                                )}
                               >
                                 {OTHER_COLOUR_DATA.map((c) => (
                                   <Cell key={c.name} fill={otherFill(c)} />
@@ -735,6 +769,7 @@ export default function App() {
                         key={s.name}
                         onMouseEnter={() => enterColour(s.name)}
                         onMouseLeave={leaveColour}
+                        onClick={() => clickColour(s.name)}
                         className="flex items-center gap-1.5 text-xs cursor-default"
                         style={{ opacity: hoverColour && !active ? 0.45 : 1, transition: "opacity 0.15s ease" }}
                       >
